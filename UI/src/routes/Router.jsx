@@ -14,25 +14,25 @@ import PrivateRoute from "./routerModel/PrivateRoute";
 const Router = () => {
   return (
     <Routes>
-      {/* <Route
-        path="/route"
-        element={
-          <PrivateRoute>
-          <BaseLayout />
-          </PrivateRoute>
-        }
-        >
-        <Route path="about" element={<About />} />
-      </Route> */}
-
       <Route path="/" element={<BaseLayout />}>
         <Route path="" element={<Home />} />
         <Route path="login" element={<Login />} />
+      </Route>
+      <Route
+        path="/"
+        element={
+          <PrivateRoute>
+            <BaseLayout />
+          </PrivateRoute>
+        }
+      >
+        <Route path="about" element={<About />} />
         <Route path="create" element={<CreatorUpload />} />
         <Route path="creator/dashboard" element={<CreatorDashboard />} />
         <Route path="user/profile" element={<UserProfile />} />
         <Route path="quiz/:id" element={<Quiz />} />
       </Route>
+
       {/* <Route path="/login" element={<Login />} />
       <Route path="/create" element={<CreatorUpload />} />
       <Route path="/creator/dashboard" element={<CreatorDashboard />} />

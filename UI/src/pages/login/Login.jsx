@@ -12,10 +12,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Helmet from "react-helmet";
 import api from "../../axios/api";
+import { saveToLocalStorage } from "../../utils/localStorage";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [registered, setRegistered] = useState(true);
   const [registerAs, setRegisterAs] = useState("student");
+  const navigate = useNavigate();
 
   const authSchema = yup.object({
     email: yup.string().email().required("Email is required."),
@@ -45,20 +48,28 @@ const Login = () => {
   const handleSubmitController = async (data) => {
     if (registered) {
       try {
-        const reurnendData = await api.post("/auth/login", { ...data });
-        console.log(reurnendData);
+        const returnedData = await api.post("/auth/login", {
+          email: data.email,
+          password: data.password,
+        });
+        saveToLocalStorage("user", returnedData.data.auth);
+        // <Navigate to="/user/profile" />;
+        navigate("/user/profile");
       } catch (e) {
         console.log(e.message);
       }
     } else {
       try {
-        const reurnendData = await api.post("/auth/signup", {
+        const returnedData = await api.post("/auth/signup", {
           name: data.name,
           email: data.email,
           password: data.password,
-          role: data.role,
+          role: registerAs,
         });
-        console.log(reurnendData);
+        saveToLocalStorage("user", returnedData.data.auth);
+        // <Redirect to="/user/profile" />;
+        navigate("/user/profile");
+        console.log(returnedData);
       } catch (e) {
         console.log(e.message);
       }

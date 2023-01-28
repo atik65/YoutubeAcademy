@@ -1,8 +1,9 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
+import { authHeader } from "../../service/authHeader";
 
 const PrivateRoute = ({ children }) => {
-  const islogedIn = false;
+  const islogedIn = authHeader();
   let location = useLocation();
 
   if (!islogedIn) {

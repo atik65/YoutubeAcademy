@@ -1,8 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  findFromLocalStorage,
+  removeFromLocalStorage,
+} from "../utils/localStorage";
 import "./navbar.css";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    removeFromLocalStorage("user");
+    navigate("/login");
+  };
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -58,9 +67,19 @@ const Navbar = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/login">
-                  Login
-                </Link>
+                {findFromLocalStorage("user") ? (
+                  <a
+                    onClick={handleLogout}
+                    style={{ cursor: "pointer" }}
+                    className="nav-link"
+                  >
+                    Logout
+                  </a>
+                ) : (
+                  <Link className="nav-link" to="/login">
+                    Login
+                  </Link>
+                )}
               </li>
             </ul>
           </div>
